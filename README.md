@@ -230,3 +230,36 @@ All tested machine-learning models improve on the majority-class baseline on the
                                            |
                                            v
                                     AI Assistant
+                                    
+
+## Application Screenshots
+
+### Supply Chain Intelligence Dashboard
+
+The dashboard provides an overview of orders, delivery performance, shipping modes, markets, and monthly late-delivery trends.
+
+![Supply Chain Intelligence Dashboard](screenshots/dashboard.png)
+
+### Late-Delivery Risk Prediction
+
+The risk prediction interface uses XGBoost to estimate late-delivery probability and SHAP to explain the factors contributing to the prediction.
+
+![Late Delivery Risk Prediction](screenshots/risk_prediction.png)
+
+### Machine Learning Model Performance
+
+The model performance page compares the tested classification models using a temporal train-test evaluation strategy.
+
+![Machine Learning Model Performance](screenshots/model_performance.png)
+
+### Business Insights
+
+The business insights page presents supply-chain patterns derived from SQL analytics and machine-learning results.
+
+![Business Insights](screenshots/business_insights.png)
+
+### AI Supply Chain Assistant
+
+The AI assistant allows users to ask natural-language questions about supply-chain analytics and individual model predictions.
+
+![AI Supply Chain Assistant](screenshots/ai_assistant.png)
