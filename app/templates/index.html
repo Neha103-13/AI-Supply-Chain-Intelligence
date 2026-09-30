@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Supply Chain Intelligence</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            background: #111827;
+            color: white;
+            padding: 28px 40px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            color: #cbd5e1;
+            font-size: 15px;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* =========================
+           CARD
+        ========================= */
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #111827;
+        }
+
+        .card h3 {
+            color: #374151;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field label {
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .field input,
+        .field select {
+            padding: 11px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+            background: white;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .button-container {
+            margin-top: 28px;
+            text-align: center;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        /* =========================
+           RESULT CARD
+        ========================= */
+
+        .result {
+            border-left: 6px solid #2563eb;
+        }
+
+        /* =========================
+           RISK BADGE
+        ========================= */
+
+        .risk-badge {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .risk-badge.high {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .risk-badge.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .risk-badge.low {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* =========================
+           PROBABILITY
+        ========================= */
+
+        .probability-section {
+            margin-top: 25px;
+        }
+
+        .probability-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 22px;
+            background: #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.6s ease;
+        }
+
+        .progress-bar.high {
+            background: #dc2626;
+        }
+
+        .progress-bar.medium {
+            background: #f59e0b;
+        }
+
+        .progress-bar.low {
+            background: #16a34a;
+        }
+
+        /* =========================
+           MODEL PREDICTION
+        ========================= */
+
+        .prediction-info {
+            margin-top: 25px;
+            padding: 18px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .prediction-info h3 {
+            margin-top: 0;
+        }
+
+        /* =========================
+           SHAP FACTORS
+        ========================= */
+
+        .factor {
+            padding: 14px;
+            margin: 10px 0;
+            background: #f8fafc;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .factor strong {
+            font-size: 15px;
+        }
+
+        .factor span {
+            font-weight: 600;
+        }
+
+        .positive {
+            border-left: 5px solid #dc2626;
+        }
+
+        .positive span {
+            color: #b91c1c;
+        }
+
+        .negative {
+            border-left: 5px solid #16a34a;
+        }
+
+        .negative span {
+            color: #166534;
+        }
+
+        /* =========================
+           EXPLANATION NOTE
+        ========================= */
+
+        .explanation-note {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 22px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .factor {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <div class="header">
+
+        <h1>
+            AI Supply Chain Intelligence
+        </h1>
+
+        <p>
+            Late Delivery Risk Prediction & Explainable AI
+        </p>
+
+    </div>
+
+
+    <div class="container">
+
+
+        <!-- =========================
+             ERROR MESSAGE
+        ========================= -->
+
+        {% if error %}
+
+        <div class="error">
+
+            <strong>Error:</strong>
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =========================
+             ORDER INPUT FORM
+        ========================= -->
+
+        <div class="card">
+
+            <h2>
+                Order Information
+            </h2>
+
+            <p>
+                Enter the order and shipping information
+                to estimate late-delivery risk.
+            </p>
+
+
+            <form
+                method="POST"
+                action="/predict"
+            >
+
+
+                <div class="grid">
+
+
+                    <!-- Order Type -->
+
+                    <div class="field">
+
+                        <label>
+                            Order Type
+                        </label>
+
+                        <select
+                            name="order_type"
+                            required
+                        >
+
+                            <option value="DEBIT">
+                                DEBIT
+                            </option>
+
+                            <option value="TRANSFER">
+                                TRANSFER
+                            </option>
+
+                            <option value="PAYMENT">
+                                PAYMENT
+                            </option>
+
+                            <option value="CASH">
+                                CASH
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Market -->
+
+                    <div class="field">
+
+                        <label>
+                            Market
+                        </label>
+
+                        <select
+                            name="market"
+                            required
+                        >
+
+                            <option value="Pacific Asia">
+                                Pacific Asia
+                            </option>
+
+                            <option value="Europe">
+                                Europe
+                            </option>
+
+                            <option value="USCA">
+                                USCA
+                            </option>
+
+                            <option value="LATAM">
+                                LATAM
+                            </option>
+
+                            <option value="Africa">
+                                Africa
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- City -->
+
+                    <div class="field">
+
+                        <label>
+                            Order City
+                        </label>
+
+                        <input
+                            type="text"
+                            name="order_city"
+                            value="Seúl"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Country -->
+
+                    <div class="field">
+
+                        <label>
+                            Order Country
+                        </label>
+
+                        <input
+                            type="text"
+                            name="order_country"
+                            value="Corea del Sur"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Region -->
+
+                    <div class="field">
+
+                        <label>
+                            Order Region
+                        </label>
+
+                        <input
+                            type="text"
+                            name="order_region"
+                            value="Eastern Asia"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- State -->
+
+                    <div class="field">
+
+                        <label>
+                            Order State
+                        </label>
+
+                        <input
+                            type="text"
+                            name="order_state"
+                            value="Seúl"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Shipping Mode -->
+
+                    <div class="field">
+
+                        <label>
+                            Shipping Mode
+                        </label>
+
+                        <select
+                            name="shipping_mode"
+                            required
+                        >
+
+                            <option value="First Class">
+                                First Class
+                            </option>
+
+                            <option value="Second Class">
+                                Second Class
+                            </option>
+
+                            <option value="Standard Class">
+                                Standard Class
+                            </option>
+
+                            <option value="Same Day">
+                                Same Day
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Scheduled Shipping Days -->
+
+                    <div class="field">
+
+                        <label>
+                            Scheduled Shipping Days
+                        </label>
+
+                        <input
+                            type="number"
+                            name="scheduled_shipping_days"
+                            min="0"
+                            max="4"
+                            value="4"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Customer Segment -->
+
+                    <div class="field">
+
+                        <label>
+                            Customer Segment
+                        </label>
+
+                        <select
+                            name="customer_segment"
+                            required
+                        >
+
+                            <option value="Consumer">
+                                Consumer
+                            </option>
+
+                            <option value="Corporate">
+                                Corporate
+                            </option>
+
+                            <option value="Home Office">
+                                Home Office
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Item Count -->
+
+                    <div class="field">
+
+                        <label>
+                            Item Count
+                        </label>
+
+                        <input
+                            type="number"
+                            name="item_count"
+                            min="1"
+                            value="2"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Distinct Product Count -->
+
+                    <div class="field">
+
+                        <label>
+                            Distinct Product Count
+                        </label>
+
+                        <input
+                            type="number"
+                            name="distinct_product_count"
+                            min="1"
+                            value="2"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Total Quantity -->
+
+                    <div class="field">
+
+                        <label>
+                            Total Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            name="total_quantity"
+                            min="1"
+                            value="5"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Average Product Price -->
+
+                    <div class="field">
+
+                        <label>
+                            Average Product Price
+                        </label>
+
+                        <input
+                            type="number"
+                            name="avg_product_price"
+                            min="0"
+                            step="0.01"
+                            value="150"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Total Discount -->
+
+                    <div class="field">
+
+                        <label>
+                            Total Discount
+                        </label>
+
+                        <input
+                            type="number"
+                            name="total_discount"
+                            min="0"
+                            step="0.01"
+                            value="50"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Average Discount Rate -->
+
+                    <div class="field">
+
+                        <label>
+                            Average Discount Rate
+                        </label>
+
+                        <input
+                            type="number"
+                            name="avg_discount_rate"
+                            min="0"
+                            max="1"
+                            step="0.001"
+                            value="0.10"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Order Year -->
+
+                    <div class="field">
+
+                        <label>
+                            Order Year
+                        </label>
+
+                        <input
+                            type="number"
+                            name="order_year"
+                            min="2015"
+                            max="2018"
+                            value="2018"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Order Month -->
+
+                    <div class="field">
+
+                        <label>
+                            Order Month
+                        </label>
+
+                        <input
+                            type="number"
+                            name="order_month"
+                            min="1"
+                            max="12"
+                            value="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Day of Week -->
+
+                    <div class="field">
+
+                        <label>
+                            Order Day of Week
+                        </label>
+
+                        <input
+                            type="number"
+                            name="order_day_of_week"
+                            min="0"
+                            max="6"
+                            value="3"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- Submit -->
+
+                <div class="button-container">
+
+                    <button type="submit">
+
+                        PREDICT DELIVERY RISK
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+
+        <!-- =========================
+             PREDICTION RESULT
+        ========================= -->
+
+        {% if result %}
+
+        <div class="card result">
+
+
+            <h2>
+                Prediction Result
+            </h2>
+
+
+            <!-- Risk Badge -->
+
+            <div class="risk-badge {{ result.risk|lower }}">
+
+                {{ result.risk }} RISK
+
+            </div>
+
+
+            <!-- Probability -->
+
+            <div class="probability-section">
+
+                <h3>
+                    Late Delivery Probability
+                </h3>
+
+
+                <div class="probability-value">
+
+                    {{ result.probability }}%
+
+                </div>
+
+
+                <div class="progress-container">
+
+                    <div
+                        class="progress-bar {{ result.risk|lower }}"
+                        style="width: {{ result.probability }}%;">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Model Prediction -->
+
+            <div class="prediction-info">
+
+                <h3>
+                    Model Prediction
+                </h3>
+
+
+                {% if result.prediction == 1 %}
+
+                <p>
+                    <strong>
+                        Late delivery predicted.
+                    </strong>
+                </p>
+
+                {% else %}
+
+                <p>
+                    <strong>
+                        On-time delivery predicted.
+                    </strong>
+                </p>
+
+                {% endif %}
+
+
+                <p>
+                    The XGBoost model generated this
+                    prediction using the supplied order
+                    and shipping features.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             SHAP EXPLANATION
+        ========================= -->
+
+        <div class="card">
+
+
+            <h2>
+                Explainable AI — SHAP Analysis
+            </h2>
+
+
+            <p>
+                The following factors show which
+                features contributed to the model's
+                prediction for this order.
+            </p>
+
+
+            <!-- Positive Factors -->
+
+            <h3>
+                Factors Increasing Predicted Risk
+            </h3>
+
+
+            {% for feature, value in result.positive.items() %}
+
+            <div class="factor positive">
+
+                <strong>
+                    {{ feature }}
+                </strong>
+
+                <span>
+                    +{{ "%.4f"|format(value) }}
+                </span>
+
+            </div>
+
+            {% endfor %}
+
+
+            <!-- Negative Factors -->
+
+            <h3 style="margin-top: 30px;">
+
+                Factors Reducing Predicted Risk
+
+            </h3>
+
+
+            {% for feature, value in result.negative.items() %}
+
+            <div class="factor negative">
+
+                <strong>
+                    {{ feature }}
+                </strong>
+
+                <span>
+                    {{ "%.4f"|format(value) }}
+                </span>
+
+            </div>
+
+            {% endfor %}
+
+
+            <!-- Explanation Note -->
+
+            <div class="explanation-note">
+
+                <strong>
+                    How to interpret this:
+                </strong>
+
+                SHAP values explain how the trained
+                model arrived at its prediction.
+                Positive values indicate features that
+                pushed the model toward higher predicted
+                late-delivery risk, while negative values
+                pushed the prediction in the opposite
+                direction.
+
+                These values describe model behavior and
+                should not be interpreted as proof of
+                causal relationships.
+
+            </div>
+
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =========================
+             FOOTER
+        ========================= -->
+
+        <div class="footer">
+
+            AI Supply Chain Intelligence |
+            XGBoost + SHAP |
+            Machine Learning & Explainable AI
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

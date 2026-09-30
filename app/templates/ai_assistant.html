@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Supply Chain Assistant</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background: #f5f7fb;
+
+            color: #1f2937;
+        }
+
+
+        /* ==================================================
+           NAVBAR
+        ================================================== */
+
+        .navbar {
+
+            background: #111827;
+
+            padding: 18px 35px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            box-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .logo {
+
+            color: white;
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.2px;
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            gap: 24px;
+
+            align-items: center;
+        }
+
+
+        .nav-links a {
+
+            color: #d1d5db;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            transition: 0.2s;
+        }
+
+
+        .nav-links a:hover {
+
+            color: white;
+        }
+
+
+        .nav-links .active {
+
+            color: white;
+
+            font-weight: 700;
+        }
+
+
+        /* ==================================================
+           MAIN CONTAINER
+        ================================================== */
+
+        .container {
+
+            max-width: 1150px;
+
+            margin: 45px auto;
+
+            padding: 0 25px;
+        }
+
+
+        /* ==================================================
+           HERO
+        ================================================== */
+
+        .hero {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #111827,
+                    #1f2937
+                );
+
+            color: white;
+
+            border-radius: 18px;
+
+            padding: 45px;
+
+            margin-bottom: 28px;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .hero h1 {
+
+            margin: 0 0 12px 0;
+
+            font-size: 36px;
+
+            font-weight: 700;
+        }
+
+
+        .hero p {
+
+            margin: 0;
+
+            color: #cbd5e1;
+
+            font-size: 16px;
+
+            line-height: 1.7;
+
+            max-width: 760px;
+        }
+
+
+        /* ==================================================
+           CARD
+        ================================================== */
+
+        .card {
+
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 30px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.05);
+
+            border:
+                1px solid #eef0f4;
+        }
+
+
+        .card h2 {
+
+            margin-top: 0;
+
+            margin-bottom: 20px;
+
+            font-size: 21px;
+
+            color: #111827;
+        }
+
+
+        /* ==================================================
+           QUESTION FORM
+        ================================================== */
+
+        .question-label {
+
+            display: block;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 10px;
+
+            color: #374151;
+        }
+
+
+        textarea {
+
+            width: 100%;
+
+            min-height: 125px;
+
+            padding: 16px;
+
+            border:
+                1px solid #d1d5db;
+
+            border-radius: 10px;
+
+            font-family: inherit;
+
+            font-size: 15px;
+
+            line-height: 1.5;
+
+            resize: vertical;
+
+            outline: none;
+
+            transition: 0.2s;
+
+            color: #1f2937;
+
+            background: #ffffff;
+        }
+
+
+        textarea:focus {
+
+            border-color: #4f46e5;
+
+            box-shadow:
+                0 0 0 3px rgba(79, 70, 229, 0.10);
+        }
+
+
+        textarea::placeholder {
+
+            color: #9ca3af;
+        }
+
+
+        .button-container {
+
+            margin-top: 16px;
+        }
+
+
+        button {
+
+            background: #4f46e5;
+
+            color: white;
+
+            border: none;
+
+            padding: 13px 28px;
+
+            border-radius: 9px;
+
+            font-family: inherit;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            box-shadow:
+                0 4px 10px rgba(79, 70, 229, 0.20);
+        }
+
+
+        button:hover {
+
+            background: #4338ca;
+
+            transform: translateY(-1px);
+        }
+
+
+        button:active {
+
+            transform: translateY(0);
+        }
+
+
+        /* ==================================================
+           AI ANSWER
+        ================================================== */
+
+        .answer-card {
+
+            border-left:
+                5px solid #4f46e5;
+        }
+
+
+        .answer-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .ai-icon {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 50%;
+
+            background: #eef2ff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+
+        .answer-header h2 {
+
+            margin: 0;
+
+            font-size: 21px;
+        }
+
+
+        .answer-text {
+
+            background: #f8fafc;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            color: #1f2937;
+
+            font-size: 16px;
+
+            line-height: 1.75;
+
+            white-space: pre-wrap;
+
+            word-wrap: break-word;
+        }
+
+
+        /* ==================================================
+           EXAMPLE QUESTIONS
+        ================================================== */
+
+        .examples {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+        }
+
+
+        .example {
+
+            background: #f8fafc;
+
+            border:
+                1px solid #e5e7eb;
+
+            padding: 17px;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            color: #374151;
+
+            transition: 0.2s;
+        }
+
+
+        .example:hover {
+
+            border-color: #c7d2fe;
+
+            background: #eef2ff;
+
+            transform: translateY(-1px);
+        }
+
+
+        .example-title {
+
+            font-weight: 600;
+
+            color: #111827;
+
+            margin-bottom: 5px;
+        }
+
+
+        /* ==================================================
+           INFORMATION NOTE
+        ================================================== */
+
+        .info-note {
+
+            background: #f8fafc;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 10px;
+
+            padding: 16px;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            color: #6b7280;
+
+            margin-top: 20px;
+        }
+
+
+        /* ==================================================
+           RESPONSIVE
+        ================================================== */
+
+        @media (max-width: 900px) {
+
+            .nav-links {
+
+                gap: 12px;
+            }
+
+            .nav-links a {
+
+                font-size: 12px;
+            }
+
+            .hero {
+
+                padding: 30px;
+            }
+
+            .hero h1 {
+
+                font-size: 29px;
+            }
+        }
+
+
+        @media (max-width: 700px) {
+
+            .navbar {
+
+                padding: 16px 20px;
+            }
+
+            .nav-links {
+
+                display: none;
+            }
+
+            .container {
+
+                margin: 25px auto;
+
+                padding: 0 15px;
+            }
+
+            .hero {
+
+                padding: 25px;
+            }
+
+            .hero h1 {
+
+                font-size: 26px;
+            }
+
+            .card {
+
+                padding: 22px;
+            }
+
+            .examples {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==================================================
+         NAVIGATION
+    ================================================== -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Supply Chain Intelligence
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="/">
+                Dashboard
+            </a>
+
+            <a href="/model-performance">
+                Model Performance
+            </a>
+
+            <a href="/business-insights">
+                Business Insights
+            </a>
+
+            <a href="/">
+                Risk Prediction
+            </a>
+
+            <a href="/ai-assistant"
+               class="active">
+                AI Assistant
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ==================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="container">
+
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <h1>
+                AI Supply Chain Assistant
+            </h1>
+
+            <p>
+                Ask questions about your supply-chain data,
+                delivery performance, shipping modes, markets
+                and machine-learning results.
+            </p>
+
+        </section>
+
+
+
+        <!-- QUESTION CARD -->
+
+        <section class="card">
+
+            <h2>
+                Ask a Question
+            </h2>
+
+
+            <form method="POST"
+                  action="/ai-assistant">
+
+
+                <label class="question-label"
+                       for="question">
+
+                    Your question
+
+                </label>
+
+
+                <textarea
+                    id="question"
+                    name="question"
+                    placeholder="Example: Which shipping mode has the highest late delivery rate?"
+                    required>{{ question }}</textarea>
+
+
+                <div class="button-container">
+
+                    <button type="submit">
+
+                        Ask AI
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+
+        <!-- AI ANSWER -->
+
+        {% if answer %}
+
+        <section class="card answer-card">
+
+
+            <div class="answer-header">
+
+                <div class="ai-icon">
+                    🤖
+                </div>
+
+
+                <h2>
+                    AI Answer
+                </h2>
+
+            </div>
+
+
+            <div class="answer-text">
+                {{ answer }}
+            </div>
+
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- EXAMPLE QUESTIONS -->
+
+        <section class="card">
+
+            <h2>
+                Suggested Questions
+            </h2>
+
+
+            <div class="examples">
+
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Delivery Performance
+                    </div>
+
+                    What is the overall late delivery rate?
+
+                </div>
+
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Shipping Analysis
+                    </div>
+
+                    Which shipping mode has the highest
+                    late delivery rate?
+
+                </div>
+
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Market Analysis
+                    </div>
+
+                    Which market has the highest observed
+                    late delivery rate?
+
+                </div>
+
+
+                <div class="example">
+
+                    <div class="example-title">
+                        Machine Learning
+                    </div>
+
+                    What are the machine learning model results?
+
+                </div>
+
+
+            </div>
+
+
+            <div class="info-note">
+
+                The assistant retrieves information from the
+                project's SQLite database and machine-learning
+                results before generating its response.
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>
