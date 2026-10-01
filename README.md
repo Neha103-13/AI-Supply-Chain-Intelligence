@@ -230,7 +230,7 @@ All tested machine-learning models improve on the majority-class baseline on the
                                            |
                                            v
                                     AI Assistant
-                                    
+
 
 ## Application Screenshots
 
