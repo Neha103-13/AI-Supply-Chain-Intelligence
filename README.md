@@ -364,6 +364,18 @@ The application provides:
 - Business Insights
 - AI Supply Chain Assistant
 
+### Database Setup
+
+The project uses a local SQLite database for SQL analytics and dashboard insights.
+
+The database file is not included in the GitHub repository because it is generated from the project dataset and is excluded from version control.
+
+Before running the application, place the database file at:
+
+```text
+database/
+└── supply_chain.db
+
 ## Application Pages
 
 ### Dashboard
